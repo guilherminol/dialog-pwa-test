@@ -3,23 +3,21 @@ import { useParams } from "react-router-dom";
 import FriendsList from "../../components/friendsList";
 import UserInfo from "../../components/userInfo";
 import { UsersContext } from "../../providers/users";
-
+import { FriendsTitle } from "./style";
 const FriendsDetails = () => {
   const { userId } = useParams();
-  const { getAllUsersDetailPage } = useContext(UsersContext);
-  const FriendsDifferentFromDetails = getAllUsersDetailPage(Number(userId));
-
-  useEffect(() => {
-    console.log(FriendsDifferentFromDetails);
-  }, [FriendsDifferentFromDetails]);
+  const { allFriends, userSearch } = useContext(UsersContext);
+  const FriendsDifferentFromDetails = allFriends.filter(
+    (friend) =>
+      friend.id !== Number(userId) &&
+      friend.name.toLowerCase().includes(userSearch.toLowerCase())
+  );
 
   return (
     <>
       <UserInfo userId={Number(userId)} />
-
-      {FriendsDifferentFromDetails && (
-        <FriendsList friends={FriendsDifferentFromDetails} />
-      )}
+      <FriendsTitle>Friends:</FriendsTitle>
+      <FriendsList friends={FriendsDifferentFromDetails} />
     </>
   );
 };

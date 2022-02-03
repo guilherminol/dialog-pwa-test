@@ -12,7 +12,7 @@ interface User {
 }
 
 interface FriendsListProps {
-  friends: User[];
+  friends: User[] | undefined;
 }
 
 const FriendsList = ({ friends }: FriendsListProps) => {
