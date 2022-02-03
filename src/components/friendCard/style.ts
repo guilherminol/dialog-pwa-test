@@ -12,6 +12,9 @@ export const CardContainer = styled.div`
   border-radius: 20px 15px 20px 15px;
   background-color: #fff;
   margin: 15px;
+  :hover {
+    cursor: pointer;
+  }
   img {
     margin: auto;
     width: 200px;

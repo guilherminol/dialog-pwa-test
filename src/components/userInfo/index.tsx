@@ -1,12 +1,24 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UsersContext } from "../../providers/users";
 import { UserContainer, UserInfoText } from "./style";
+interface userInfoProps {
+  userId: number;
+}
+const UserInfo = ({ userId }: userInfoProps) => {
+  const { getAllUsersDetailPage, getOneUser, user } = useContext(UsersContext);
+  useEffect(() => {
+    console.log(userId);
+    getOneUser(userId);
+    getAllUsersDetailPage(userId);
+  }, [userId]);
 
-const UserInfo = () => {
-  const { user } = useContext(UsersContext);
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <UserContainer>
-      <img src={user?.profilePic} alt="" />
+      <img src={user?.profilePic} alt={user?.name} />
       <UserInfoText>
         <p>
           <b>Name:</b> {user?.name}

@@ -1,4 +1,6 @@
 import { CardContainer, FriendInfo } from "./style";
+import { useNavigate } from "react-router-dom";
+
 interface User {
   age: number;
   company: string;
@@ -13,8 +15,10 @@ interface CardProps {
 }
 
 const FriendCard = ({ card }: CardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <CardContainer>
+    <CardContainer onClick={() => navigate(`/details/${card.id}`)}>
       <img src={card.profilePic} alt="" />
       <FriendInfo>
         <p>Name: {card.name}</p>
