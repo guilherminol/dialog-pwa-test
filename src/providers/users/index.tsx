@@ -1,4 +1,11 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import axios from "axios";
 
 interface User {
@@ -16,6 +23,8 @@ interface UserProviderData {
   user?: User | null;
   getOneUser: (userId: number) => void;
   getAllUsersDetailPage: (id: number) => User[];
+  setUserSearch: Dispatch<SetStateAction<string>>;
+  userSearch: string;
 }
 interface UsersProviderProps {
   children: ReactNode;
@@ -26,6 +35,7 @@ export const UsersContext = createContext({} as UserProviderData);
 export const UsersProvider = ({ children }: UsersProviderProps) => {
   const [allFriends, setAllFriends] = useState<User[]>([]);
   const [user, setUser] = useState<User>();
+  const [userSearch, setUserSearch] = useState("");
 
   const getAllUsers = async () => {
     const cacheData = await getSingleCacheData("Users", "/users");
@@ -54,6 +64,7 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
       axios.get(`/users/${userId}`).then((response) => {
         const userData = response.data;
         setUser(userData);
+        console.log(userId, userData);
         addDataIntoCache("Users", `/users/${userId}`, userData);
       });
     }
@@ -99,6 +110,8 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
         getOneUser,
         user,
         getAllUsersDetailPage,
+        userSearch,
+        setUserSearch,
       }}
     >
       {children}
