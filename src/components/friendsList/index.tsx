@@ -18,7 +18,7 @@ interface FriendsListProps {
 const FriendsList = ({ friends }: FriendsListProps) => {
   return (
     <FriendsListContainer>
-      {friends.map((person, index) => {
+      {friends?.map((person, index) => {
         return <FriendCard card={person} key={index}></FriendCard>;
       })}
     </FriendsListContainer>

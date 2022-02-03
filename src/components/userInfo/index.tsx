@@ -7,13 +7,18 @@ interface userInfoProps {
 const UserInfo = ({ userId }: userInfoProps) => {
   const { getAllUsersDetailPage, getOneUser, user } = useContext(UsersContext);
   useEffect(() => {
+    console.log(userId);
     getOneUser(userId);
     getAllUsersDetailPage(userId);
   }, [userId]);
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <UserContainer>
-      <img src={user?.profilePic} alt="" />
+      <img src={user?.profilePic} alt={user?.name} />
       <UserInfoText>
         <p>
           <b>Name:</b> {user?.name}

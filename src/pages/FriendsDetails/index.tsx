@@ -9,10 +9,17 @@ const FriendsDetails = () => {
   const { getAllUsersDetailPage } = useContext(UsersContext);
   const FriendsDifferentFromDetails = getAllUsersDetailPage(Number(userId));
 
+  useEffect(() => {
+    console.log(FriendsDifferentFromDetails);
+  }, [FriendsDifferentFromDetails]);
+
   return (
     <>
       <UserInfo userId={Number(userId)} />
-      <FriendsList friends={FriendsDifferentFromDetails} />
+
+      {FriendsDifferentFromDetails && (
+        <FriendsList friends={FriendsDifferentFromDetails} />
+      )}
     </>
   );
 };

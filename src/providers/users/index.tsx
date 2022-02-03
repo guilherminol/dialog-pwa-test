@@ -52,9 +52,9 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
 
     if (!cacheData) {
       axios.get(`/users/${userId}`).then((response) => {
-        const user = response.data;
-        setUser(user);
-        addDataIntoCache("Users", `/users/${user?.id}`, user);
+        const userData = response.data;
+        setUser(userData);
+        addDataIntoCache("Users", `/users/${userId}`, userData);
       });
     }
   };
