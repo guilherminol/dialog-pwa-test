@@ -7,6 +7,9 @@ export const Container = styled.header`
   flex-direction: column;
   img {
     width: 200px;
+    :hover {
+      cursor: pointer;
+    }
   }
   @media (min-width: 768px) {
     justify-content: left;

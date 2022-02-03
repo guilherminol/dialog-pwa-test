@@ -12,8 +12,10 @@ interface User {
 }
 
 interface UserProviderData {
-  friends: User[];
-  user?: User;
+  allFriends: User[];
+  user?: User | null;
+  getOneUser: (userId: number) => void;
+  getAllUsersDetailPage: (id: number) => User[];
 }
 interface UsersProviderProps {
   children: ReactNode;
@@ -22,24 +24,43 @@ interface UsersProviderProps {
 export const UsersContext = createContext({} as UserProviderData);
 
 export const UsersProvider = ({ children }: UsersProviderProps) => {
-  const [friends, setFriends] = useState<User[]>([]);
+  const [allFriends, setAllFriends] = useState<User[]>([]);
   const [user, setUser] = useState<User>();
+
+  const getAllUsers = () => {
+    axios.get("/users").then((res) => {
+      const friends = res.data;
+      setAllFriends(friends);
+    });
+  };
+
+  const getAllUsersDetailPage = (id: number) => {
+    const friendsDifferentFromUser = allFriends.filter(
+      (friend) => friend.id !== id
+    );
+
+    return friendsDifferentFromUser;
+  };
+
+  const getOneUser = (userId: number) => {
+    axios.get(`/users/${userId}`).then((response) => {
+      setUser(response.data);
+    });
+  };
+
   useEffect(() => {
-    axios
-      .get("/users")
-      .then((response) => {
-        const data = response.data;
-        const splicedUser = data.splice(0, 1);
-        setUser(splicedUser[0]);
-        setFriends(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    getAllUsers();
+  }, [user]);
 
   return (
-    <UsersContext.Provider value={{ friends, user }}>
+    <UsersContext.Provider
+      value={{
+        allFriends,
+        getOneUser,
+        user,
+        getAllUsersDetailPage,
+      }}
+    >
       {children}
     </UsersContext.Provider>
   );
