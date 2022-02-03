@@ -37,19 +37,36 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
   const [user, setUser] = useState<User>();
   const [userSearch, setUserSearch] = useState("");
 
+  useEffect(() => {
+    console.log(userSearch);
+  }, [userSearch]);
+
   const getAllUsers = async () => {
     const cacheData = await getSingleCacheData("Users", "/users");
     setAllFriends(cacheData);
     if (!cacheData) {
-      axios.get("/users").then((res) => {
-        const friends = res.data;
-        setAllFriends(friends);
-        addDataIntoCache("Users", "/users", friends);
-      });
+      axios
+        .get("https://backend-dialog.herokuapp.com/users", {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+          proxy: {
+            host: "104.236.174.88",
+            port: 3128,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          const friends = res.data;
+          console.log(friends, "DENTRO DO NOSSO CONTEXT");
+          setAllFriends(friends);
+          addDataIntoCache("Users", "/users", friends);
+        });
     }
   };
 
   const getAllUsersDetailPage = (id: number) => {
+    console.log(allFriends, "TA NO CONTEXT");
     const friendsDifferentFromUser = allFriends.filter(
       (friend) => friend.id !== id
     );
@@ -61,12 +78,15 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
     setUser(cacheData);
 
     if (!cacheData) {
-      axios.get(`/users/${userId}`).then((response) => {
-        const userData = response.data;
-        setUser(userData);
-        console.log(userId, userData);
-        addDataIntoCache("Users", `/users/${userId}`, userData);
-      });
+      console.log(userId + "ESSE É O USER ID");
+      axios
+        .get(`https://backend-dialog.herokuapp.com/users/${userId}`)
+        .then((response) => {
+          const userData = response.data;
+          setUser(userData);
+          console.log(userId, userData);
+          addDataIntoCache("Users", `/users/${userId}`, userData);
+        });
     }
   };
 
@@ -79,6 +99,7 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
     url: string,
     response: [] | User
   ) => {
+    console.log("ADD DATA INTO CACHE FOI chamado");
     const data = new Response(JSON.stringify(response));
     if ("caches" in window) {
       caches.open(cacheName).then((cache) => {
@@ -93,6 +114,8 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
 
     const cacheStorage = await caches.open(cacheName);
     const cachedResponse = await cacheStorage.match(url);
+
+    console.log("Get single cache data foi chamado");
 
     if (!cachedResponse || !cachedResponse.ok) {
       return null;

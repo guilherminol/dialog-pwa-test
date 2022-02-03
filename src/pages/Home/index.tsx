@@ -21,18 +21,16 @@ const Home = () => {
   }, [friends]);
 
   useEffect(() => {
-    console.log(allFriends);
-  }, [allFriends]);
-
-  useEffect(() => {
-    if (allFriends) {
+    if (userSearch) {
       console.log(allFriends);
       const filteredFriends = allFriends?.filter((friend) =>
-        friend.name.includes(userSearch)
+        friend.name.toLowerCase().includes(userSearch.toLowerCase())
       );
       setFriends(filteredFriends);
+    } else {
+      setFriends(allFriends);
     }
-  }, [allFriends]);
+  }, [userSearch, allFriends]);
 
   return <FriendsList friends={friends} />;
 };

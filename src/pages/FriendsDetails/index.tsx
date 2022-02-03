@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import FriendsList from "../../components/friendsList";
 import UserInfo from "../../components/userInfo";
 import { UsersContext } from "../../providers/users";
-
+import { FriendsTitle } from "./style";
 const FriendsDetails = () => {
   const { userId } = useParams();
   const { allFriends, userSearch } = useContext(UsersContext);
@@ -16,7 +16,7 @@ const FriendsDetails = () => {
   return (
     <>
       <UserInfo userId={Number(userId)} />
-
+      <FriendsTitle>Friends:</FriendsTitle>
       <FriendsList friends={FriendsDifferentFromDetails} />
     </>
   );
