@@ -17,12 +17,7 @@ const Home = () => {
   const [friends, setFriends] = useState<User[] | undefined>();
 
   useEffect(() => {
-    console.log(friends);
-  }, [friends]);
-
-  useEffect(() => {
     if (userSearch) {
-      console.log(allFriends);
       const filteredFriends = allFriends?.filter((friend) =>
         friend.name.toLowerCase().includes(userSearch.toLowerCase())
       );
