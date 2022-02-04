@@ -37,7 +37,9 @@ export const Input = styled.div`
     background-color: #fff;
     border-radius: 0 10px 10px 0;
     height: 35px;
-
+    :hover {
+      cursor: pointer;
+    }
     svg {
       height: 100%;
       color: #0b9154;

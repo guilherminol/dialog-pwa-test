@@ -1,15 +1,23 @@
 import { Container, Input } from "./styles";
 import { BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "../../providers/users";
 
 const Header = () => {
+  const [search, setSearch] = useState("");
+
   const navigate = useNavigate();
 
   const redirectToHome = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    if (!search) {
+      setUserSearch("");
+    }
+  }, [search]);
 
   const { setUserSearch } = useContext(UsersContext);
   return (
@@ -23,9 +31,9 @@ const Header = () => {
         <input
           type="text"
           placeholder="Search"
-          onChange={(e) => setUserSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button>
+        <button onClick={() => setUserSearch(search)}>
           <BsSearch />
         </button>
       </Input>
